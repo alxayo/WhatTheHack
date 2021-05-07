@@ -1,3 +1,2 @@
-### This is a test - feature 2
-
-Close Issue
+### This is a test - feature 3
+Make a reabase
