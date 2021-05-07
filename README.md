@@ -1,3 +1,3 @@
-### This is our project - Feature 1
+### This is our project
 
 Its's me DVD!
