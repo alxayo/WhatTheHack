@@ -83,5 +83,5 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
     - uses: azure/webapps-deploy@v2
       with:
-        app-name: xayodevops-dev
-        images: $registryName/$repositoryName:${{ github.sha }}
+        app-name: ${{ env.appName }}
+        images: ${{ env.registryName }}/${{ env.$repositoryName }}:${{ github.sha }}
