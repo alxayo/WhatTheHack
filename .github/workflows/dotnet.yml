@@ -16,7 +16,7 @@ env:
   registryName: xayodevopsreg.azurecr.io
   repositoryName: wht/dotnetcoreapp
   dockerFolderPath: Application/src/RazorPagesTestSample
-  tag: ${github.run_number}
+  tag: ${{ github.run_number }}
 
 jobs:
   build:
