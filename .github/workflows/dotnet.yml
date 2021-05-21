@@ -53,9 +53,6 @@ jobs:
   docker-image:
     needs: build
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: Application/src/RazorPagesTestSample
     steps:
     - uses: actions/checkout@v2
     - name: Login Docker
