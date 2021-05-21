@@ -12,6 +12,11 @@ on:
     paths:
       - Application/**
       - .github/workflows/dotnet.yml
+env:
+  registryName: xayodevopsreg.azurecr.io
+  repositoryName: wht/dotnetcoreapp
+  dockerFolderPath: Application/src/RazorPagesTestSample
+  tag: ${{ github.run_number }}
 
 jobs:
   build:
@@ -44,3 +49,15 @@ jobs:
               title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
               body: body
             });
+            
+  docker-image:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Login Docker
+      run: docker login $registryName -u ${{secrets.ACR_USERNAME}} -p ${{secrets.ACR_PASSWORD}}
+    - name: Docker Build
+      run: docker build -t $registryName/$repositoryName:$tag --build-arg build_version=$tag $dockerFolderPath
+    - name: Docker push
+      run: docker push $registryName/$repositoryName:$tag
