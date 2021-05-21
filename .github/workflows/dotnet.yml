@@ -17,6 +17,7 @@ env:
   repositoryName: wht/dotnetcoreapp
   dockerFolderPath: Application/src/RazorPagesTestSample
   tag: ${{ github.run_number }}
+  appName: xayodevops-dev
 
 jobs:
   build:
@@ -61,3 +62,26 @@ jobs:
       run: docker build -t $registryName/$repositoryName:$tag --build-arg build_version=$tag $dockerFolderPath
     - name: Docker push
       run: docker push $registryName/$repositoryName:$tag
+
+  deploy:
+    needs: docker-image
+    runs-on: ubuntu-latest
+    steps:
+    # checkout the repo
+    - name: 'Checkout Github Action'
+      uses: actions/checkout@master
+
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - uses: azure/docker-login@v1
+      with:
+        login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    - uses: azure/webapps-deploy@v2
+      with:
+        app-name: $appName
+        images: $registryName/$repositoryName:${{ github.sha }}
