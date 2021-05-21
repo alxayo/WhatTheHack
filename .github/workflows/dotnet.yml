@@ -12,6 +12,11 @@ on:
     paths:
       - Application/**
       - .github/workflows/dotnet.yml
+env:
+  registryName: xayodevopsreg.azurecr.io
+  repositoryName: wht/dotnetcoreapp
+  dockerFolderPath: Application/src/RazorPagesTestSample
+  tag: ${github.run_number}
 
 jobs:
   build:
