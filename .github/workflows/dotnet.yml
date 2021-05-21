@@ -49,3 +49,17 @@ jobs:
               title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
               body: body
             });
+            
+  docker-image:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Application/src/RazorPagesTestSample
+    steps:
+    - uses: actions/checkout@v2
+    - name: Login Docker
+      run: docker $registryName -u ACR_USERNAME -p ACR_PASSWORD
+    - name: Docker Build
+      run: docker build -t $registryName/$repositoryName:$tag --build-arg build_version=$tag $dockerFolderPath
+    - name: Docker push
+      run: docker push $registryName/$repositoryName:$tag
