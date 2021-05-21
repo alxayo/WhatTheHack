@@ -66,6 +66,7 @@ jobs:
   deploy:
     needs: docker-image
     runs-on: ubuntu-latest
+    environment: dev-environment
     steps:
     # checkout the repo
     - name: 'Checkout Github Action'
