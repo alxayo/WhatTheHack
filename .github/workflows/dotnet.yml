@@ -85,4 +85,4 @@ jobs:
     - uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.appName }}
-        images: ${{ env.registryName }}/${{ env.repositoryName }}:${{ github.sha }}
+        images: ${{ env.registryName }}/${{ env.repositoryName }}:${{ env.tag }}
