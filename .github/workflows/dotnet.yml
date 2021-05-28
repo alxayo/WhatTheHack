@@ -56,8 +56,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - uses: Azure/get-keyvault-secrets@v1
+      with: 
+        keyvault: "ghkv"
+        secrets: 'ACR-USERNAME'
+      id: azureKeyVault
     - name: Login Docker
-      run: docker login $registryName -u ${{secrets.ACR_USERNAME}} -p ${{secrets.ACR_PASSWORD}}
+      run: docker login $registryName -u ${{steps.azureKeyVault.outputs.ACR-USERNAME}} -p ${{secrets.ACR_PASSWORD}}
     - name: Docker Build
       run: docker build -t $registryName/$repositoryName:$tag --build-arg build_version=$tag $dockerFolderPath
     - name: Docker push
